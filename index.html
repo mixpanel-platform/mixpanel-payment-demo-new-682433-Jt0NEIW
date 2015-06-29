@@ -16,10 +16,10 @@
     <script>
       MP.api.ready(function() {
         // replace with event name of your choice
-        var eventName = $('#eventName').MPEventSelect();
+        var eventName = "Create Account";
 
         var runQuery = function() {
-          var $dau = MP.api.segment(eventName.val(), {
+          var $dau = MP.api.segment(eventName, {
             from: moment().subtract(30, 'days'),
             to: moment().subtract(1, 'days'),
             unit: 'day',
