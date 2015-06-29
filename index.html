@@ -50,98 +50,22 @@
       /* Mixpanel query function */
       var runQuery = function() {
         
-        /* Set today's date and Monday's date */
-        var dateRange = dateSelect.MPDatepicker('value');
-        var today = new Date();
-        var day = today.getDay();
-        //TODO: set hrs for Monday to 0000
-        switch(day){
-          case 0:
-            var monday = new Date();
-            monday.setDate(monday.getDate()-6);
-            break;
-          case 1:
-            var monday = new Date();
-            break;
-          case 2:
-            var monday = new Date();
-            monday.setDate(monday.getDate()-1);
-            break;
-          case 3:
-            var monday = new Date();
-            monday.setDate(monday.getDate()-2);
-            break;
-          case 4:
-            var monday = new Date();
-            monday.setDate(monday.getDate()-3);
-            break;
-          case 5:
-            var monday = new Date();
-            monday.setDate(monday.getDate()-4);
-            break;
-          case 6:
-            var monday = new Date();
-            monday.setDate(monday.getDate()-5);
-            break;
-        }
+        /* Get DAU and MAU */
+        var $dau = MP.api.segment(eventName.val(), {
+              from: moment().subtract(30, 'days'),
+              to: moment().subtract(1, 'days'),
+              unit: 'day',
+              type: 'unique'
+            });
+        var $mau = MP.api.segment(eventName.val(), {
+          from: moment().subtract(30, 'days'),
+          to: moment().subtract(1, 'days'),
+          unit: 'month',
+          type: 'unique'
+        });
 
-      /* Query, chart & sum durations for Web */
-      var params = {
-        from: dateRange.from,    
-        to: dateRange.to,                         
-        'where': 'properties["operating system"] == "OS X"',
-        'method':'sum'
-      };
-      MP.api.segment("Landing Page Loaded", "Duration", params).done(function(results) {
-        var durationObject = {};
-        durationObject["Web Duration"] = results.values();
-        webGraph.MPChart('setData', durationObject);
-        //console.log(results.values());
-      });
-      var sumParams = {
-        from: monday,    
-        to: today,                         
-        'where': 'properties["operating system"] == "OS X"',
-        'method':'sum'
-      };
-      MP.api.segment("Landing Page Loaded", "Duration", sumParams).done(function(results) {
-        var sum = 0;
-        for (var date in results.values()) {
-          if (results.values().hasOwnProperty(date)) {
-            sum += results.values()[date];
-          }
-        }
-        document.getElementById("webDurationSum").innerHTML = sum.toFixed(2);
-      });
+        /* Create graphs for DAU and DAU/MAU */
       
-      /* Query, chart & sum durations for Android */
-      var params = {
-          from: dateRange.from,    
-          to: dateRange.to,                         
-          'where': 'properties["operating system"] == "Windows"',
-          'method':'sum'
-      };
-      MP.api.segment("Landing Page Loaded", "Duration", params).done(function(results) {
-        var durationObject = {};
-        durationObject["Android Duration"] = results.values();
-        androidGraph.MPChart('setData', durationObject);
-        //console.log(results.values());
-      });
-      var sumParams = {
-        from: monday,    
-        to: today,                         
-        'where': 'properties["operating system"] == "Windows"',
-        'method':'sum'
-      };
-      MP.api.segment("Landing Page Loaded", "Duration", sumParams).done(function(results) {
-        var sum = 0;
-        for (var date in results.values()) {
-          if (results.values().hasOwnProperty(date)) {
-            sum += results.values()[date];
-          }
-        }
-        document.getElementById("androidDurationSum").innerHTML = sum.toFixed(2);
-      });
     };
     /* End query */
   
