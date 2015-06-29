@@ -41,6 +41,11 @@
       
       <h1>DAU/MAU</h1><br clear="all" /><br clear="all" />
       <div id="dauMauGraph"></div><br clear="all" />
+      
+      <br clear="all" /><hr /><br clear="all" /><br clear="all" />
+      
+      <h1>New Users</h1><br clear="all" /><br clear="all" />
+      <div id="dauMauGraph"></div><br clear="all" />
 
     </div>
     
@@ -56,6 +61,7 @@
       var mauDauGraph = $('#dauMauGraph').MPChart({chartType: 'line'});
       var mauGraph = $('#mauGraph').MPChart({chartType:'line'});
       var eventName = "Create Account";
+      var newUserEvent = "Create Account";
       
       /* Mixpanel query function */
       var runQuery = function() {
@@ -94,6 +100,7 @@
         });
       };
     /* End query */
+    
     </script>
   </body>
 </html>
