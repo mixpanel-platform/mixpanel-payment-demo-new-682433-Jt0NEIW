@@ -28,7 +28,7 @@
       <div style="clear: both;"></div>
       
       <h1>Daily Active Users</h1><br clear="all" />
-      <div id="dauGraph"></div><br clear="all" /><br clear="all" />
+      <div id="dauGraph"></div><div id="mauGraph"></div><br clear="all" /><br clear="all" />
 
       <hr /><br clear="all" />
       
@@ -47,6 +47,7 @@
       /* Set some variables */
       var dauGraph  = $('#dauGraph').MPChart({chartType: 'line'});
       var mauDauGraph = $('#dauMauGraph').MPChart({chartType: 'line'});
+      var mauGraph = $('#mauGraph').MPChart({chartType:'line'});
       var eventName = "Create Account";
       
       /* Mixpanel query function */
@@ -74,6 +75,7 @@
           var dauMau = dau.divide(mau.sum()).values();
           console.log (dauMau)
           dauGraph.MPChart('setData', dau);
+          mauGraph.MPChart('setData', mau);
           mauDauGraph.MPChart('setData', dauMau);
         });
       };
