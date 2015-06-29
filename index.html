@@ -71,9 +71,16 @@
           unit: 'month',
           type: 'unique'
         });
+        
+        var $mauForGraph = MP.api.segment(eventName, {
+          from: moment().subtract(3, 'months'),
+          to: moment().subtract(1, 'days'),
+          unit: 'month',
+          type: 'unique'
+        });
 
         /* Create graphs for DAU and DAU/MAU */
-        $.when($dau, $mau).done(function(dau, mau) {
+        $.when($dau, $mau, $mauForGraph).done(function(dau, mau, mauForGraph) {
           // average the DAU values and divide them by the MAU ones
           // (we sum the MAU in the case where the 30 days spans over two months)
           //debugger
@@ -81,7 +88,7 @@
           console.log (dauMau)
           dauGraph.MPChart('setData', dau);
           mauGraph.MPChart('setData', mau);
-          mauDauGraph.MPChart('setData', dauMau);
+          mauDauGraph.MPChart('setData', mauForGraph);
         });
       };
     /* End query */
