@@ -72,12 +72,8 @@
           //debugger
           var dauMau = dau.divide(mau.sum()).values();
           console.log (dauMau)
-          dauGraph.MPChart({ // create chart
-            data: dauMau                              // set its data
-          });
-          mauDauGraph.MPChart({
-            data: dauMau
-          });
+          dauGraph.MPChart('setData', dauMau);
+          mauDauGraph.MPChart('setDate', dauMau);
         });
       };
     /* End query */
