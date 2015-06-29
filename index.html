@@ -44,8 +44,8 @@
       });
     
       /* Set some variables */
-      var webGraph  = $('#dauGraph').MPChart({chartType: 'line'});
-      var androidGraph = $('#dauMauGraph').MPChart({chartType: 'line'});
+      var dauGraph  = $('#dauGraph').MPChart({chartType: 'line'});
+      var mauDauGraph = $('#dauMauGraph').MPChart({chartType: 'line'});
 
       /* Mixpanel query function */
       var runQuery = function() {
@@ -71,16 +71,17 @@
           //debugger
           var dauMau = dau.divide(mau.sum()).values();
           console.log (dauMau)
-          $('<div></div>').appendTo('body').MPChart({ // create chart
+          dauGraph.MPChart({ // create chart
             chartType: 'line',
             data: dauMau                              // set its data
+          });
+          mauDauGraph.MPChart({
+            charType: 'line',
+            data: dauMau
           });
         });
       };
     /* End query */
-  
-    /* Run query on date change */
-      dateSelect.on('change', runQuery);
     </script>
   </body>
 </html>
