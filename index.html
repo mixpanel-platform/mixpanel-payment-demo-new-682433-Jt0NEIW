@@ -5,50 +5,152 @@
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/css/reset.css">
     <link rel="stylesheet" type="text/css" href="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.css">
     <script src="https://cdn.mxpnl.com/libs/mixpanel-platform/build/mixpanel-platform.v0.latest.min.js"></script>
+    <style>
+      h1{
+        font-size: 23px;
+        color: #545454;
+      }
+      .durationSumDiv{
+        font-size: 18px;
+        display: inline-block;
+        color: #545454;
+        font-weight: bold;
+      }
+      #webDurationSum{
+        font-size:22px;
+      }
+    </style>
   </head>
   <body class="mixpanel-platform-body">
     <div class="mixpanel-platform-section">
-        <div id="eventName" style="float: left;"></div>
-        <div style="clear: left"></div>
-        <div style="clear: both;"></div>
-        <div id="graph"></div>
+      <div id="dateSelect" style="float: right;"></div>
+      <div style="clear: both;"></div>
+      
+      <h1>Web Watch Duration</h1><br clear="all" />
+      <div id="webGraph"></div><br clear="all" />
+      <div class="durationSumDiv">Week's Watch Duration Sum: <span id="webDurationSum"></span> s.</div>
+      <br clear="all" /><br clear="all" />
+      
+      <hr /><br clear="all" />
+      
+      <h1>Android Watch Duration</h1><br clear="all" />
+      <div id="androidGraph"></div><br clear="all" />
+      <div class="durationSumDiv">Week's Watch Duration Sum: <span id="androidDurationSum"></span> s.</div>
+      
     </div>
+    
     <script>
-      MP.api.ready(function() {
-        // replace with event name of your choice
-        var eventName = "Create Account";
+    
+      /* Run query upon doc load */
+      $(document).ready(function(){
+        runQuery();
+      });
+    
+      /* Set some variables */
+      var dateSelect  = $('#dateSelect').MPDatepicker();
+      var webGraph  = $('#webGraph').MPChart({chartType: 'line'});
+      var androidGraph = $('#androidGraph').MPChart({chartType: 'line'});
 
-        var runQuery = function() {
-          var $dau = MP.api.segment(eventName, {
-            from: moment().subtract(30, 'days'),
-            to: moment().subtract(1, 'days'),
-            unit: 'day',
-            type: 'unique'
-          });
+      /* Mixpanel query function */
+      var runQuery = function() {
+        
+        /* Set today's date and Monday's date */
+        var dateRange = dateSelect.MPDatepicker('value');
+        var today = new Date();
+        var day = today.getDay();
+        //TODO: set hrs for Monday to 0000
+        switch(day){
+          case 0:
+            var monday = new Date();
+            monday.setDate(monday.getDate()-6);
+            break;
+          case 1:
+            var monday = new Date();
+            break;
+          case 2:
+            var monday = new Date();
+            monday.setDate(monday.getDate()-1);
+            break;
+          case 3:
+            var monday = new Date();
+            monday.setDate(monday.getDate()-2);
+            break;
+          case 4:
+            var monday = new Date();
+            monday.setDate(monday.getDate()-3);
+            break;
+          case 5:
+            var monday = new Date();
+            monday.setDate(monday.getDate()-4);
+            break;
+          case 6:
+            var monday = new Date();
+            monday.setDate(monday.getDate()-5);
+            break;
+        }
 
-
-          var $mau = MP.api.segment(eventName, {
-            from: moment().subtract(30, 'days'),
-            to: moment().subtract(1, 'days'),
-            unit: 'month',
-            type: 'unique'
-          });
-
-          $.when($dau, $mau).done(function(dau, mau) {
-            // average the DAU values and divide them by the MAU ones
-            // (we sum the MAU in the case where the 30 days spans over two months)
-            //debugger
-            var dauMau = dau.divide(mau.sum()).values();
-            console.log (dauMau)
-            $('<div></div>').appendTo('body').MPChart({ // create chart
-              chartType: 'line',
-              data: dauMau                              // set its data
-            });
-          });
-        };
-
-      runQuery();
-    });
+      /* Query, chart & sum durations for Web */
+      var params = {
+        from: dateRange.from,    
+        to: dateRange.to,                         
+        'where': 'properties["operating system"] == "OS X"',
+        'method':'sum'
+      };
+      MP.api.segment("Landing Page Loaded", "Duration", params).done(function(results) {
+        var durationObject = {};
+        durationObject["Web Duration"] = results.values();
+        webGraph.MPChart('setData', durationObject);
+        //console.log(results.values());
+      });
+      var sumParams = {
+        from: monday,    
+        to: today,                         
+        'where': 'properties["operating system"] == "OS X"',
+        'method':'sum'
+      };
+      MP.api.segment("Landing Page Loaded", "Duration", sumParams).done(function(results) {
+        var sum = 0;
+        for (var date in results.values()) {
+          if (results.values().hasOwnProperty(date)) {
+            sum += results.values()[date];
+          }
+        }
+        document.getElementById("webDurationSum").innerHTML = sum.toFixed(2);
+      });
+      
+      /* Query, chart & sum durations for Android */
+      var params = {
+          from: dateRange.from,    
+          to: dateRange.to,                         
+          'where': 'properties["operating system"] == "Windows"',
+          'method':'sum'
+      };
+      MP.api.segment("Landing Page Loaded", "Duration", params).done(function(results) {
+        var durationObject = {};
+        durationObject["Android Duration"] = results.values();
+        androidGraph.MPChart('setData', durationObject);
+        //console.log(results.values());
+      });
+      var sumParams = {
+        from: monday,    
+        to: today,                         
+        'where': 'properties["operating system"] == "Windows"',
+        'method':'sum'
+      };
+      MP.api.segment("Landing Page Loaded", "Duration", sumParams).done(function(results) {
+        var sum = 0;
+        for (var date in results.values()) {
+          if (results.values().hasOwnProperty(date)) {
+            sum += results.values()[date];
+          }
+        }
+        document.getElementById("androidDurationSum").innerHTML = sum.toFixed(2);
+      });
+    };
+    /* End query */
+  
+    /* Run query on date change */
+      dateSelect.on('change', runQuery);
     </script>
   </body>
 </html>
