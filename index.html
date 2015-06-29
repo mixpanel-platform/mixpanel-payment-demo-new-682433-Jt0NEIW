@@ -26,17 +26,14 @@
       <div id="dateSelect" style="float: right;"></div>
       <div style="clear: both;"></div>
       
-      <h1>Web Watch Duration</h1><br clear="all" />
-      <div id="webGraph"></div><br clear="all" />
-      <div class="durationSumDiv">Week's Watch Duration Sum: <span id="webDurationSum"></span> s.</div>
-      <br clear="all" /><br clear="all" />
-      
+      <h1>Daily Active Users</h1><br clear="all" />
+      <div id="dauGraph"></div><br clear="all" /><br clear="all" />
+
       <hr /><br clear="all" />
       
-      <h1>Android Watch Duration</h1><br clear="all" />
-      <div id="androidGraph"></div><br clear="all" />
-      <div class="durationSumDiv">Week's Watch Duration Sum: <span id="androidDurationSum"></span> s.</div>
-      
+      <h1>DAU/MAU</h1><br clear="all" />
+      <div id="dauMauGraph"></div><br clear="all" />
+
     </div>
     
     <script>
@@ -47,9 +44,8 @@
       });
     
       /* Set some variables */
-      var dateSelect  = $('#dateSelect').MPDatepicker();
-      var webGraph  = $('#webGraph').MPChart({chartType: 'line'});
-      var androidGraph = $('#androidGraph').MPChart({chartType: 'line'});
+      var webGraph  = $('#dauGraph').MPChart({chartType: 'line'});
+      var androidGraph = $('#dauMauGraph').MPChart({chartType: 'line'});
 
       /* Mixpanel query function */
       var runQuery = function() {
