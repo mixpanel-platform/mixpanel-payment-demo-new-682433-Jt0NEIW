@@ -45,7 +45,7 @@
       <br clear="all" /><hr /><br clear="all" /><br clear="all" />
       
       <h1>New Users</h1><br clear="all" /><br clear="all" />
-      <div id="dauMauGraph"></div><br clear="all" />
+      <div id="newUserGraph"></div><br clear="all" />
 
     </div>
     
@@ -60,6 +60,7 @@
       var dauGraph  = $('#dauGraph').MPChart({chartType: 'line'});
       var mauDauGraph = $('#dauMauGraph').MPChart({chartType: 'line'});
       var mauGraph = $('#mauGraph').MPChart({chartType:'line'});
+      var newUserGraph = $('#newUserGraph').MPChart({chartType:'line'});
       var eventName = "Create Account";
       var newUserEvent = "Create Account";
       
@@ -79,7 +80,6 @@
           unit: 'month',
           type: 'unique'
         });
-        
         var $mauForGraph = MP.api.segment(eventName, {
           from: moment().subtract(3, 'months'),
           to: moment().subtract(1, 'days'),
@@ -97,6 +97,11 @@
           dauGraph.MPChart('setData', dau);
           mauGraph.MPChart('setData', mauForGraph);
           mauDauGraph.MPChart('setData', dauMau);
+        });
+        
+        /* Get number of new users per day */
+        MP.api.segment(newUserEvent,{from:moment().subtract(30,'days'),to:moment().subtract(1,'days'),unit:'day',type:'unique'}).done(function(results){
+          newUserGraph.MPChart('setData', results);
         });
       };
     /* End query */
