@@ -132,10 +132,10 @@
           var params = {
             from: moment().subtract(30,'days'),
             to: moment().subtract(1,'days'),
-            'where': 'properties["Operating System"] == IOS'
+            'where': 'properties["Operating System"] == "IOS"'
           }
           for(key in topEvents.values()) {
-            MP.api.events(topEvents.values()[key], {}).done(function(results) {
+            MP.api.events(topEvents.values()[key], params).done(function(results) {
               eventsList.push(results.values());
               if(eventsList.length == eventCount){
                 buildChartFromArray(eventsList, iosEventsBarGraph);
@@ -147,10 +147,10 @@
           var params = {
             from: moment().subtract(30,'days'),
             to: moment().subtract(1,'days'),
-            'where': 'properties["Operating System"] == Android'
+            'where': 'properties["Operating System"] == "Android"'
           }
           for(key in topEvents.values()) {
-            MP.api.events(topEvents.values()[key], {}).done(function(results) {
+            MP.api.events(topEvents.values()[key], params).done(function(results) {
               eventsList.push(results.values());
               if(eventsList.length == eventCount){
                 buildChartFromArray(eventsList, androidEventsBarGraph);
