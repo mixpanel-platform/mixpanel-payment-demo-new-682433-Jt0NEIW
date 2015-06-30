@@ -136,7 +136,7 @@
             MP.api.events(topEvents.values()[key], {}).done(function(results) {
               eventsList.push(results.values());
               if(eventsList.length == eventCount){
-                buildBarChart(eventsList);
+                buildBarChart(eventsList, 'iosEventsBarGraph');
               }
             });
           }
@@ -146,8 +146,13 @@
     
     /* Function that builds a bar chart given event counts */
     
-    function buildBarChart(events) {
-      
+    function buildBarChart(events, chartElement) {
+      var eventCount = events.length; 
+      var barChartParams = {};
+      // For each event...
+      for(var i = 0; i < eventCount; i++){
+        
+      }
     }
     
     </script>
