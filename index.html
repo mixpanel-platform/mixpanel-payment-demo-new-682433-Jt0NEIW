@@ -152,8 +152,8 @@
           eventsList = [];
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], params).done(function(results) {
-              console.log(results.values());
               eventsList.push(results.values());
+              console.log("EVENTS LIST = "+eventsList.length+", TOTAL SIZE = "+eventCount);
               if(eventsList.length == eventCount){
                 buildChartFromArray(eventsList, androidEventsBarGraph);
                 buildChartFromArray(eventsList,androidEventsPieChart);
