@@ -149,14 +149,14 @@
             to: moment().subtract(1,'days'),
             'where': 'properties["Operating System"] == "Android"'
           }
-          eventsList = [];
+          var eventsList2 = [];
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], params).done(function(results) {
-              eventsList.push(results.values());
-              console.log("EVENTS LIST = "+eventsList.length+", TOTAL SIZE = "+eventCount);
-              if(eventsList.length == eventCount){
-                buildChartFromArray(eventsList, androidEventsBarGraph);
-                buildChartFromArray(eventsList,androidEventsPieChart);
+              eventsList2.push(results.values());
+              console.log("EVENTS LIST = "+eventsList2.length+", TOTAL SIZE = "+eventCount);
+              if(eventsList2.length == eventCount){
+                buildChartFromArray(eventsList2, androidEventsBarGraph);
+                buildChartFromArray(eventsList2,androidEventsPieChart);
               }
             });
           }
