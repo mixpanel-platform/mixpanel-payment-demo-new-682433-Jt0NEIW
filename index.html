@@ -114,7 +114,7 @@
         /* Get top events by device */
         MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7}).done(function(results) {
             console.log('top events\n', results.values());
-            iosEventsBarGraph.MPChart('setData',results.values());
+            iosEventsBarGraph.MPChart('setData',results);
         });
         
       };
