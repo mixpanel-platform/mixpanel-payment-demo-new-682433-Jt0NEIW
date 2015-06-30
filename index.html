@@ -112,11 +112,10 @@
         });
         
         /* Get top events by device */
-        MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7}).done(function(results) {
-            console.log('top events\n', results.values());
-            iosEventsBarGraph.MPChart('setData',results);
+        var $topEvents = MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7});
+        $.when($topEvents).done(function(topEvents){
+          console.log(topEvents);
         });
-        
       };
     /* End query */
     
