@@ -47,6 +47,11 @@
       
       <h1>Top iOS Events</h1><br clear="all" /><br clear="all" />
       <div class="halfChart" id="iosEventsBarGraph"></div><div class="halfChart" id="iosEventsPieChart"></div><br clear="all" /><br clear="all" />
+      
+      <br clear="all" /><hr /><br clear="all" /><br clear="all" />
+      
+      <h1>Top Android Events</h1><br clear="all" /><br clear="all" />
+      <div class="halfChart" id="androidEventsBarGraph"></div><div class="halfChart" id="androidEventsPieChart"></div><br clear="all" /><br clear="all" />
 
     </div>
     
@@ -64,6 +69,8 @@
       var newUserGraph = $('#newUserGraph').MPChart({chartType:'line'});
       var iosEventsBarGraph = $('#iosEventsBarGraph').MPChart({chartType:'bar'});
       var iosEventsPieChart = $('#iosEventsPieChart').MPChart({chartType:'pie'});
+      var androidEventsBarGraph = $('#androidEventsBarGraph').MPChart({chartType:'bar'});
+      var androidEventsPieChart = $('#androidEventsPieChart').MPChart({chartType:'pie'});
       var eventName = "Create Account";
       var newUserEvent = "Create Account";
       
@@ -119,15 +126,14 @@
         /* Get top events by device */
         var $topEvents = MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7});
         $.when($topEvents).done(function(topEvents){
-          // top events in object form -> topEvents.values()
           var eventCount = Object.size(topEvents.values());
           var eventsList = [];
+          // Build charts for iOS top events 
           var params = {
             from: moment().subtract(30,'days'),
             to: moment().subtract(1,'days'),
             'where': 'properties["Operating System"] == IOS'
           }
-          
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], {}).done(function(results) {
               eventsList.push(results.values());
@@ -137,12 +143,27 @@
               }
             });
           }
+          // Build charts for Android top events 
+          var params = {
+            from: moment().subtract(30,'days'),
+            to: moment().subtract(1,'days'),
+            'where': 'properties["Operating System"] == Android'
+          }
+          for(key in topEvents.values()) {
+            MP.api.events(topEvents.values()[key], {}).done(function(results) {
+              eventsList.push(results.values());
+              if(eventsList.length == eventCount){
+                buildChartFromArray(eventsList, iosEventsBarGraph);
+                buildChartFromArray(eventsList,iosEventsPieChart);
+              }
+            });
+          }
+          
         });
       };
     /* End query */
     
     /* Function that builds a bar chart given event counts */
-    
     function buildChartFromArray(events, chartElement) {
       console.log(events);
       var barChartParams = {};
