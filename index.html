@@ -153,8 +153,8 @@
             MP.api.events(topEvents.values()[key], {}).done(function(results) {
               eventsList.push(results.values());
               if(eventsList.length == eventCount){
-                buildChartFromArray(eventsList, iosEventsBarGraph);
-                buildChartFromArray(eventsList,iosEventsPieChart);
+                buildChartFromArray(eventsList, androidEventsBarGraph);
+                buildChartFromArray(eventsList,androidEventsPieChart);
               }
             });
           }
