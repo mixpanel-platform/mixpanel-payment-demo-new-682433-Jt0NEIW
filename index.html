@@ -115,7 +115,15 @@
         var $topEvents = MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7});
         $.when($topEvents).done(function(topEvents){
           // top events in object form -> topEvents.values()
-          
+          window.eventCount = Object.size(topEvents.values());
+          for(key in results.values()) {
+            MP.api.events(results.values()[key], params2).done(function(results) {
+              window.eventsList.push(results.values());
+              if(window.eventsList.length == window.eventCount){
+                downloadCSV(window.eventsList, "export");
+              }
+            });
+          }
         });
       };
     /* End query */
