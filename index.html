@@ -151,11 +151,10 @@
       var barChartParams = {};
       // For each event...
       for(var i = 0; i < events.length; i++){
-        for(eventName in events[0]){
-          debugger
+        for(eventName in events[i]){
           barChartParams[eventName] = 0;
-          for(date in events[0][eventName]){
-            barChartParams[eventName] += events[0][eventName][date];
+          for(date in events[i][eventName]){
+            barChartParams[eventName] += events[i][eventName][date];
           }
         }
       }
