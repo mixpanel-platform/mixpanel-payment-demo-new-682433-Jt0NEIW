@@ -170,7 +170,9 @@
         });
         
         /* Chats by Operating System */
-        
+        MP.api.segment(chatEvent, 'Operating System', {from: moment().subtract(30, 'days'), to:moment().subtract(1,'days'), unit: 'day'}).done(function(results) {
+          chatsByDevice.MPChart('setData',results);
+        });
         
       };
     /* End query */
