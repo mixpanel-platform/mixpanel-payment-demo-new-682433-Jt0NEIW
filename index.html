@@ -176,7 +176,10 @@
       };
     /* End query */
     
-    /* Function that builds a bar chart given event counts */
+    /**
+    Function that builds a bar chart given event counts 
+    - events is structured [{"Event Name":{"Event Date": numberofEventsOnDate}, ... }, ...]
+    **/
     function buildChartFromArray(events, chartElement) {
       console.log(events);
       var barChartParams = {};
