@@ -149,7 +149,7 @@
             to: moment().subtract(1,'days'),
             'where': 'properties["Operating System"] == "Android"'
           }
-          var eventsList = [];
+          eventsList = [];
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], params).done(function(results) {
               eventsList.push(results.values());
