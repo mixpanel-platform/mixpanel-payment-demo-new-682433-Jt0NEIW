@@ -52,6 +52,11 @@
       
       <h1>Top Android Events</h1><br clear="all" /><br clear="all" />
       <div class="halfChart" id="androidEventsBarGraph"></div><div class="halfChart" id="androidEventsPieChart"></div><br clear="all" /><br clear="all" />
+      
+      <br clear="all" /><hr /><br clear="all" /><br clear="all" />
+      
+      <h1>Chats by Device</h1><br clear="all" /><br clear="all" />
+      <div id="chatsByDeviceGraph"></div><br clear="all" />
 
     </div>
     
@@ -71,6 +76,7 @@
       var iosEventsPieChart = $('#iosEventsPieChart').MPChart({chartType:'pie'});
       var androidEventsBarGraph = $('#androidEventsBarGraph').MPChart({chartType:'bar'});
       var androidEventsPieChart = $('#androidEventsPieChart').MPChart({chartType:'pie'});
+      var chatsByDeviceGraph = $('#chatsByDeviceGraph').MPChart({chartType:'line'});
       var eventName = "Create Account";
       var newUserEvent = "Create Account";
       var chatEvent = "Add Friends";
