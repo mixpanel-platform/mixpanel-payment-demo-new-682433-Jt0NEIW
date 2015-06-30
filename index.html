@@ -22,7 +22,6 @@
         width:50%;
         float:left;
       }
-
     </style>
   </head>
   <body class="mixpanel-platform-body">
@@ -57,11 +56,9 @@
       
       <h1>Chats by Device</h1><br clear="all" /><br clear="all" />
       <div id="chatsByDeviceGraph"></div><br clear="all" />
-
     </div>
     
     <script>
-    
       /* Run query upon doc load */
       $(document).ready(function(){
         runQuery();
@@ -77,9 +74,9 @@
       var androidEventsBarGraph = $('#androidEventsBarGraph').MPChart({chartType:'bar'});
       var androidEventsPieChart = $('#androidEventsPieChart').MPChart({chartType:'pie'});
       var chatsByDeviceGraph = $('#chatsByDeviceGraph').MPChart({chartType:'line'});
-      var eventName = "Create Account";
-      var newUserEvent = "Create Account";
-      var chatEvent = "Add Friends";
+      var eventName = "Create Account"; // Event that defines "active user"
+      var newUserEvent = "Create Account"; // New user event
+      var chatEvent = "Add Friends"; // Chat event
       
       /* Get object size */
       Object.size = function(obj) {
@@ -117,9 +114,8 @@
         $.when($dau, $mau, $mauForGraph).done(function(dau, mau, mauForGraph) {
           // average the DAU values and divide them by the MAU ones
           // (we sum the MAU in the case where the 30 days spans over two months)
-          //debugger
           var dauMau = dau.divide(mau.sum()).values();
-          console.log (dauMau)
+          // Set graphs for DAU, MAU and DAU/MAU
           dauGraph.MPChart('setData', dau);
           mauGraph.MPChart('setData', mauForGraph);
           mauDauGraph.MPChart('setData', dauMau);
@@ -130,17 +126,19 @@
           newUserGraph.MPChart('setData', results);
         });
         
-        /* Get top events by device */
+        /* Get top events */
         var $topEvents = MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7});
         $.when($topEvents).done(function(topEvents){
-          var eventCount = Object.size(topEvents.values());
-          // Build charts for iOS top events 
+          var eventCount = Object.size(topEvents.values()); // Should always be 7
+          
+          /* Build charts for iOS top events */
           var eventsList = [];
           var params = {
             from: moment().subtract(30,'days'),
             to: moment().subtract(1,'days'),
             'where': 'properties["Operating System"] == "IOS"'
           }
+          // For each iOS top event, gsum up event counts for last month and build graphs
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], params).done(function(results) {
               eventsList.push(results.values());
@@ -150,17 +148,18 @@
               }
             });
           }
-          // Build charts for Android top events 
+          
+          /* Build charts for Android top events */
           var params = {
             from: moment().subtract(30,'days'),
             to: moment().subtract(1,'days'),
             'where': 'properties["Operating System"] == "Android"'
           }
           var eventsList2 = [];
+          // For each Android top event, sum up event counts for last month and build graphs
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], params).done(function(results) {
               eventsList2.push(results.values());
-              console.log("EVENTS LIST = "+eventsList2.length+", TOTAL SIZE = "+eventCount);
               if(eventsList2.length == eventCount){
                 buildChartFromArray(eventsList2, androidEventsBarGraph);
                 buildChartFromArray(eventsList2,androidEventsPieChart);
