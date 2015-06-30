@@ -127,8 +127,8 @@
         var $topEvents = MP.api.topEvents({from: moment().subtract(30,'days'),to:moment().subtract(1,'days'), limit: 7});
         $.when($topEvents).done(function(topEvents){
           var eventCount = Object.size(topEvents.values());
-          var eventsList = [];
           // Build charts for iOS top events 
+          var eventsList = [];
           var params = {
             from: moment().subtract(30,'days'),
             to: moment().subtract(1,'days'),
@@ -149,6 +149,7 @@
             to: moment().subtract(1,'days'),
             'where': 'properties["Operating System"] == "Android"'
           }
+          var eventsList = [];
           for(key in topEvents.values()) {
             MP.api.events(topEvents.values()[key], params).done(function(results) {
               eventsList.push(results.values());
@@ -158,7 +159,6 @@
               }
             });
           }
-          
         });
       };
     /* End query */
