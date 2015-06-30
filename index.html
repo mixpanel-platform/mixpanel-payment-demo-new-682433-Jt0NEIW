@@ -136,13 +136,19 @@
             MP.api.events(topEvents.values()[key], {}).done(function(results) {
               eventsList.push(results.values());
               if(eventsList.length == eventCount){
-                console.log(eventsList);
+                buildBarChart(eventsList);
               }
             });
           }
         });
       };
     /* End query */
+    
+    /* Function that builds a bar chart given event counts */
+    
+    function buildBarChart(events) {
+      
+    }
     
     </script>
   </body>
