@@ -132,10 +132,10 @@
             'where': 'properties["Operating System"] == IOS'
           }
           
-          for(key in results.values()) {
-            MP.api.events(results.values()[key], {}).done(function(results) {
+          for(key in topEvents.values()) {
+            MP.api.events(topEvents.values()[key], {}).done(function(results) {
               eventsList.push(results.values());
-              if(eventsList.length == window.eventCount){
+              if(eventsList.length == eventCount){
                 console.log(eventsList);
               }
             });
