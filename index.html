@@ -116,7 +116,7 @@
           // (we sum the MAU in the case where the 30 days spans over two months)
           var dauMau = dau.divide(mau.sum()).values();
           // Set graphs for DAU, MAU and DAU/MAU
-                    console.log(dau);
+                    console.log(dau.values());
           dauGraph.MPChart('setData', dau);
           mauGraph.MPChart('setData', mauForGraph);
           mauDauGraph.MPChart('setData', dauMau);
