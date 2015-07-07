@@ -117,6 +117,7 @@
           var dauMau = dau.divide(mau.sum()).values();
           // Set graphs for DAU, MAU and DAU/MAU
           dauGraph.MPChart('setData', dau);
+          console.log(dau);
           mauGraph.MPChart('setData', mauForGraph);
           mauDauGraph.MPChart('setData', dauMau);
         });
